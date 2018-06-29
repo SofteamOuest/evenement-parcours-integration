@@ -26,7 +26,7 @@ public class EvenementParcoursIntegrationRessource {
     @PostMapping(path = "/evenement")
     @ResponseStatus(HttpStatus.CREATED)
     public List<EvenementGenerique> creationEvenementsParcoursIntegration(@RequestBody @Valid Personne personne) throws EvenementParcoursIntegrationException {
-        return evenementParcoursIntegrationService.creationEvenementParcoursIntegration(personne.getIdPersonne(),personne.getDateArrivee());
+        return evenementParcoursIntegrationService.creationEvenementParcoursIntegration(personne.getIdPersonne(),personne.getDateArrivee(), personne.getDateVisiteMedicale());
     }
 
     @GetMapping(path = "/evenement")

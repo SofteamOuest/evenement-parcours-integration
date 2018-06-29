@@ -2,7 +2,7 @@ evenement-parcours-integration:
   - nom: Point accueil
     description:
     type-declancheur: s
-    valeur-declancheur: 1
+    valeur-declancheur: 0
     type: Parcours intégration
     cycle: false
     type-recurrence:
@@ -10,7 +10,6 @@ evenement-parcours-integration:
     nb_jour_avant_rappel: 15
     destinataire-groupe:
       - rh
-      - commerce
   - nom: Entretien etonnement
     description: Rh fait un mail à direction, manager proximité, commercial
     type-declancheur: m
@@ -21,7 +20,7 @@ evenement-parcours-integration:
     valeur-recurrence:
     nb_jour_avant_rappel: 15
     destinataire-groupe:
-      - rh
+      - manager
       - commerce
   - nom: Point fin de période d'éssai
     description: Manager doit déterminer les objectifs en fonction du point de mission
@@ -33,5 +32,15 @@ evenement-parcours-integration:
     valeur-recurrence:
     nb_jour_avant_rappel: 15
     destinataire-groupe:
+      - manager
+  - nom: Visite médicale
+    description: RH doit prévenir et convenir d'une date pour la visite médicale
+    type-declancheur: m
+    valeur-declancheur: 4
+    type: Visite médicale
+    cycle: true
+    type-recurrence: a
+    valeur-recurrence: 4
+    nb_jour_avant_rappel: 30
+    destinataire-groupe:
       - rh
-      - commerce

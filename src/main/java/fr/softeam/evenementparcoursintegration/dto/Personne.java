@@ -10,8 +10,11 @@ public class Personne {
     private String idPersonne;
 
     @NotNull
-    @Size(min=10,max=10)
+    @Size(min = 10, max = 10)
     private String dateArrivee;
+
+    @Size(min = 10, max = 10)
+    private String dateVisiteMedicale;
 
     public String getIdPersonne() {
         return idPersonne;
@@ -27,6 +30,14 @@ public class Personne {
 
     public void setDateArrivee(String dateArrivee) {
         this.dateArrivee = dateArrivee;
+    }
+
+    public String getDateVisiteMedicale() {
+        return dateVisiteMedicale;
+    }
+
+    public void setDateVisiteMedicale(String dateVisiteMedicale) {
+        this.dateVisiteMedicale = dateVisiteMedicale;
     }
 
     public Personne() {

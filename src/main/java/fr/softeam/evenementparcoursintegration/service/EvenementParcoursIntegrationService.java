@@ -39,11 +39,11 @@ public class EvenementParcoursIntegrationService {
      * @param dateArrivee date d'arrivée dans la société de la personne
      *
      */
-    public List<EvenementGenerique> creationEvenementParcoursIntegration(String idPersonne, String dateArrivee) throws EvenementParcoursIntegrationException {
+    public List<EvenementGenerique> creationEvenementParcoursIntegration(String idPersonne, String dateArrivee, String dateVisiteMedicale) throws EvenementParcoursIntegrationException {
         List<EvenementGenerique> evenementGeneriqueList = new ArrayList<>();
         List<EvenementParcoursIntegration> evenementsParcoursIntegration = yamlConfigEvenementParcoursIntegration.getEvenementParcoursIntegration();
         for (EvenementParcoursIntegration evenementParcoursIntegration : evenementsParcoursIntegration) {
-            EvenementGenerique evenementGenerique = creationEvenementGeneriqueDepuisEvenementParcoursIntegration(evenementParcoursIntegration,dateArrivee);
+            EvenementGenerique evenementGenerique = creationEvenementGeneriqueDepuisEvenementParcoursIntegration(evenementParcoursIntegration,dateArrivee,dateVisiteMedicale);
             Integer idEvenement = evenementGeneriqueAdapter.ajouterEvenementGenerique(evenementGenerique);
             evenementGenerique.setIdEvenement(idEvenement);
             evenementPersonneParcoursIntegrationDao.creerEvenementPersonneParcoursIntegreation(idEvenement,idPersonne);
@@ -61,17 +61,24 @@ public class EvenementParcoursIntegrationService {
      * @throws EvenementParcoursIntegrationException
      */
     private EvenementGenerique creationEvenementGeneriqueDepuisEvenementParcoursIntegration(
-            EvenementParcoursIntegration evenementParcoursIntegration,String dateArrivee) throws EvenementParcoursIntegrationException {
+            EvenementParcoursIntegration evenementParcoursIntegration,String dateArrivee,String dateVisiteMedicale) throws EvenementParcoursIntegrationException {
 
         EvenementGenerique evenementGenerique = new EvenementGenerique();
         evenementGenerique.setNom(evenementParcoursIntegration.getNom());
         evenementGenerique.setDescription(evenementParcoursIntegration.getDescription());
-        evenementGenerique.setDateEvenement(
-                getDateEvenement(
-                    dateArrivee,
-                    evenementParcoursIntegration.getTypeDeclancheur(),
-                    evenementParcoursIntegration.getValeurDeclancheur())
-        );
+        if (evenementParcoursIntegration.getNom().contains("Visite médicale") && dateVisiteMedicale != null) {
+            evenementGenerique.setDateEvenement(
+                    getDateEvenement(dateVisiteMedicale,"a",4)
+            );
+        }else{
+            evenementGenerique.setDateEvenement(
+                    getDateEvenement(
+                            dateArrivee,
+                            evenementParcoursIntegration.getTypeDeclancheur(),
+                            evenementParcoursIntegration.getValeurDeclancheur())
+            );
+        }
+
         evenementGenerique.setType(evenementParcoursIntegration.getType());
         evenementGenerique.setCycle(evenementParcoursIntegration.getCycle());
         evenementGenerique.setTypeRecurrence(evenementParcoursIntegration.getTypeRecurrence());
@@ -79,7 +86,6 @@ public class EvenementParcoursIntegrationService {
 
         return evenementGenerique;
     }
-
 
     /**
      * Calcul de la date d'evenement en fonction d'un déclancheur (jour/semaine/mois/année)
