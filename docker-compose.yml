@@ -1,0 +1,17 @@
+version: '3.2'
+services:
+
+  evenement-parcours-integration-postgres:
+    build:
+      context: .
+      dockerfile: Dockerfile-postgres
+
+  evenement-parcours-integration:
+    build:
+      context: .
+      dockerfile: Dockerfile-back
+    depends_on:
+    - evenement-parcours-integration-postgres
+    ports:
+    - "8082:8093"
+

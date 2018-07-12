@@ -1,0 +1,6 @@
+FROM postgres:10-alpine
+MAINTAINER Alois PIN <alois.pin@gmail.com>
+
+ADD init_db.sh /docker-entrypoint-initdb.d/
+
+USER postgres
