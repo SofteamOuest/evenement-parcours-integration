@@ -45,7 +45,7 @@ podTemplate(label: 'meltingpoc-evenement-parcours-integration-pod', nodeSelector
 
                 stage('build sources'){
 
-                    sh 'mvn clean install'
+                    sh 'mvn clean install -DskipTests'
 
                 }
         }
