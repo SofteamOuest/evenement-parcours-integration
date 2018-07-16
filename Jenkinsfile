@@ -45,7 +45,7 @@ podTemplate(label: 'meltingpoc-evenement-parcours-integration-pod', nodeSelector
 
                 stage('build sources'){
 
-                    sh 'mvn clean install'
+                    sh 'mvn clean package sonar:sonar -Dsonar.host.url=http://sonarqube-sonarqube:9000 -Dsonar.java.binaries=target -DskipTests'
 
                 }
         }
@@ -55,7 +55,9 @@ podTemplate(label: 'meltingpoc-evenement-parcours-integration-pod', nodeSelector
                 stage('build docker image'){
 
 
-                    sh "docker build -t registry.k8.wildwidewest.xyz/repository/docker-repository/pocs/meltingpoc-evenement-parcours-integration:$now ."
+                    sh "docker build -f Dockerfile-back -t registry.k8.wildwidewest.xyz/repository/docker-repository/pocs/meltingpoc-evenement-parcours-integration:$now ."
+
+                    sh "docker build -f Dockerfile-postgres -t registry.k8.wildwidewest.xyz/repository/docker-repository/pocs/meltingpoc-evenement-parcours-integration-postgres:$now ."
 
                     sh 'mkdir /etc/docker'
 
@@ -68,6 +70,8 @@ podTemplate(label: 'meltingpoc-evenement-parcours-integration-pod', nodeSelector
                     }
 
                     sh "docker push registry.k8.wildwidewest.xyz/repository/docker-repository/pocs/meltingpoc-evenement-parcours-integration:$now"
+
+                    sh "docker push registry.k8.wildwidewest.xyz/repository/docker-repository/pocs/meltingpoc-evenement-parcours-integration-postgres:$now"
 
                 }
         }
