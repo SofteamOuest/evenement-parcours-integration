@@ -7,7 +7,7 @@ evenement-parcours-integration:
     cycle: false
     type-recurrence:
     valeur-recurrence:
-    nb_jour_avant_rappel: 15
+    nb_jour_avant_rappel: 21
     destinataire-groupe:
       - rh
   - nom: Entretien etonnement
@@ -18,7 +18,7 @@ evenement-parcours-integration:
     cycle: false
     type-recurrence:
     valeur-recurrence:
-    nb_jour_avant_rappel: 15
+    nb_jour_avant_rappel: 21
     destinataire-groupe:
       - manager
       - commerce
@@ -30,7 +30,7 @@ evenement-parcours-integration:
     cycle: false
     type-recurrence:
     valeur-recurrence:
-    nb_jour_avant_rappel: 15
+    nb_jour_avant_rappel: 21
     destinataire-groupe:
       - manager
   - nom: Visite médicale
@@ -41,6 +41,6 @@ evenement-parcours-integration:
     cycle: true
     type-recurrence: a
     valeur-recurrence: 4
-    nb_jour_avant_rappel: 30
+    nb_jour_avant_rappel: 21
     destinataire-groupe:
       - rh
