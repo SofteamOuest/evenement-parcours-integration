@@ -76,7 +76,7 @@ podTemplate(label: 'meltingpoc-evenement-parcours-integration-pod', nodeSelector
                 build job: "/SofteamOuest/chart-run/master",
                         wait: false,
                         parameters: [[$class: 'StringParameterValue', name: 'image', value: "$now",
-                                $class: 'StringParameterValue', name: 'chart', value: "api-gateway"]]
+                                $class: 'StringParameterValue', name: 'chart', value: "evenement-parcours-integration"]]
 
             }
         }
