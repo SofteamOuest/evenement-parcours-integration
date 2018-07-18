@@ -2,13 +2,13 @@ version: '3.2'
 services:
 
   evenement-parcours-integration-postgres:
-    image: "registry.k8.wildwidewest.xyz/repository/docker-repository/pocs/meltingpoc-evenement-parcours-integration:${tag}"
+    image: "registry.k8.wildwidewest.xyz/repository/docker-repository/pocs/meltingpoc-evenement-parcours-integration-postgres:${tag}"
     build:
       context: .
       dockerfile: Dockerfile-postgres
 
   evenement-parcours-integration:
-    image: "registry.k8.wildwidewest.xyz/repository/docker-repository/pocs/meltingpoc-evenement-parcours-integration-postgres:${tag}"
+    image: "registry.k8.wildwidewest.xyz/repository/docker-repository/pocs/meltingpoc-evenement-parcours-integration:${tag}"
     build:
       context: .
       dockerfile: Dockerfile-back
