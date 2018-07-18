@@ -26,18 +26,18 @@ podTemplate(label: 'meltingpoc-evenement-parcours-integration-pod', nodeSelector
 
         properties([
                 buildDiscarder(
-                    logRotator(
-                        artifactDaysToKeepStr: '1',
-                        artifactNumToKeepStr: '1',
-                        daysToKeepStr: '3',
-                        numToKeepStr: '3'
-                    )
+                        logRotator(
+                                artifactDaysToKeepStr: '1',
+                                artifactNumToKeepStr: '1',
+                                daysToKeepStr: '3',
+                                numToKeepStr: '3'
+                        )
                 )
-            ])
+        ])
 
         def now = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
 
-        stage('checkout sources'){
+        stage('checkout sources') {
             checkout scm;
         }
 
@@ -46,18 +46,12 @@ podTemplate(label: 'meltingpoc-evenement-parcours-integration-pod', nodeSelector
                 stage('build sources'){
 
                     sh 'mvn clean package sonar:sonar -Dsonar.host.url=http://sonarqube-sonarqube:9000 -Dsonar.java.binaries=target -DskipTests'
-
                 }
         }
 
         container('docker') {
 
                 stage('build docker image'){
-
-
-                    sh "docker build -f Dockerfile-back -t registry.k8.wildwidewest.xyz/repository/docker-repository/pocs/meltingpoc-evenement-parcours-integration:$now ."
-
-                    sh "docker build -f Dockerfile-postgres -t registry.k8.wildwidewest.xyz/repository/docker-repository/pocs/meltingpoc-evenement-parcours-integration-postgres:$now ."
 
                     sh 'mkdir /etc/docker'
 
@@ -69,21 +63,20 @@ podTemplate(label: 'meltingpoc-evenement-parcours-integration-pod', nodeSelector
                          sh "docker login -u admin -p ${NEXUS_PWD} registry.k8.wildwidewest.xyz"
                     }
 
-                    sh "docker push registry.k8.wildwidewest.xyz/repository/docker-repository/pocs/meltingpoc-evenement-parcours-integration:$now"
+                    sh "tag=$now docker-compose build"
 
-                    sh "docker push registry.k8.wildwidewest.xyz/repository/docker-repository/pocs/meltingpoc-evenement-parcours-integration-postgres:$now"
-
+                    sh "docker-compose push"
                 }
         }
 
         container('kubectl') {
 
-            stage('deploy'){
+            stage('deploy') {
 
-
-                build job: "/SofteamOuest/evenement-parcours-integration-run/master",
-                  wait: false,
-                  parameters: [[$class: 'StringParameterValue', name: 'image', value: "$now"]]
+                build job: "/SofteamOuest/chart-run/master",
+                        wait: false,
+                        parameters: [[$class: 'StringParameterValue', name: 'image', value: "$now",
+                                $class: 'StringParameterValue', name: 'chart', value: "api-gateway"]]
 
             }
         }
