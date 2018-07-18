@@ -65,7 +65,7 @@ podTemplate(label: 'meltingpoc-evenement-parcours-integration-pod', nodeSelector
 
                     sh "tag=$now docker-compose build"
 
-                    sh "docker-compose push"
+                    sh "tag=$now docker-compose push"
                 }
         }
 
