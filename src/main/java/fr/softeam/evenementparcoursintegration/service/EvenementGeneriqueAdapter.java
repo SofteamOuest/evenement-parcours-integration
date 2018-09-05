@@ -15,11 +15,11 @@ public class EvenementGeneriqueAdapter {
 
     private RestTemplate restTemplate;
 
-    public EvenementGeneriqueAdapter(RestTemplate restTemplate){
+    public EvenementGeneriqueAdapter(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    @Value("${EVENEMENT_GENERIQUE_URI}")
+    @Value("${evenement_generique_uri}")
     private String EVENEMENT_GENERIQUE_URI;
 
     /**
@@ -34,11 +34,11 @@ public class EvenementGeneriqueAdapter {
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<EvenementGenerique> entity = new HttpEntity<>(evenementGenerique, headers);
             EvenementGenerique responseEntity =
-                    restTemplate.postForObject(EVENEMENT_GENERIQUE_URI ,
+                    restTemplate.postForObject(EVENEMENT_GENERIQUE_URI,
                             entity,
                             EvenementGenerique.class);
             return responseEntity.getIdEvenement();
-        }catch(HttpClientErrorException  exception){
+        } catch (HttpClientErrorException exception) {
             throw new EvenementParcoursIntegrationException(exception.getResponseBodyAsString());
         }
     }
@@ -48,18 +48,19 @@ public class EvenementGeneriqueAdapter {
      *
      * @return liste des évènements génériques
      */
-    public List<EvenementGenerique> getEvenementGenerique() throws EvenementParcoursIntegrationException{
-        try{
+    public List<EvenementGenerique> getEvenementGenerique() throws EvenementParcoursIntegrationException {
+        try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<?> entity = new HttpEntity<>("", headers);
             ResponseEntity<List<EvenementGenerique>> responseEntity =
-                    restTemplate.exchange(EVENEMENT_GENERIQUE_URI ,
+                    restTemplate.exchange(EVENEMENT_GENERIQUE_URI,
                             HttpMethod.GET,
                             entity,
-                            new ParameterizedTypeReference<List<EvenementGenerique>>(){});
+                            new ParameterizedTypeReference<List<EvenementGenerique>>() {
+                            });
             return responseEntity.getBody();
-        }catch(HttpClientErrorException  exception){
+        } catch (HttpClientErrorException exception) {
             throw new EvenementParcoursIntegrationException(exception.getResponseBodyAsString());
         }
     }
@@ -68,21 +69,21 @@ public class EvenementGeneriqueAdapter {
      * Récupération de la liste des évènements génériques dans la date d'evènement est après la date limite
      *
      * @param date date limite
-     *
      * @return liste des évènements générique
      */
-    public List<EvenementGenerique> getEvenementGeneriqueAfterDate(String date) throws EvenementParcoursIntegrationException{
-        try{
+    public List<EvenementGenerique> getEvenementGeneriqueAfterDate(String date) throws EvenementParcoursIntegrationException {
+        try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<?> entity = new HttpEntity<>("", headers);
             ResponseEntity<List<EvenementGenerique>> responseEntity =
-                    restTemplate.exchange(EVENEMENT_GENERIQUE_URI +"/limite?limite="+date,
+                    restTemplate.exchange(EVENEMENT_GENERIQUE_URI + "/limite?limite=" + date,
                             HttpMethod.GET,
                             entity,
-                            new ParameterizedTypeReference<List<EvenementGenerique>>(){});
+                            new ParameterizedTypeReference<List<EvenementGenerique>>() {
+                            });
             return responseEntity.getBody();
-        }catch(HttpClientErrorException  exception){
+        } catch (HttpClientErrorException exception) {
             throw new EvenementParcoursIntegrationException(exception.getResponseBodyAsString());
         }
     }
@@ -93,18 +94,18 @@ public class EvenementGeneriqueAdapter {
      * @param evenementGenerique evenement générique à ajouter en base
      * @return identifiant de l'évènement générique
      */
-    public EvenementGenerique modifierEvenement(Integer idEvenement,EvenementGenerique evenementGenerique) throws EvenementParcoursIntegrationException {
+    public EvenementGenerique modifierEvenement(Integer idEvenement, EvenementGenerique evenementGenerique) throws EvenementParcoursIntegrationException {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<EvenementGenerique> entity = new HttpEntity<>(evenementGenerique, headers);
             ResponseEntity<EvenementGenerique> responseEntity =
-                    restTemplate.exchange(EVENEMENT_GENERIQUE_URI +"/"+idEvenement,
+                    restTemplate.exchange(EVENEMENT_GENERIQUE_URI + "/" + idEvenement,
                             HttpMethod.PUT,
                             entity,
                             EvenementGenerique.class);
             return responseEntity.getBody();
-        }catch(HttpClientErrorException  exception){
+        } catch (HttpClientErrorException exception) {
             throw new EvenementParcoursIntegrationException(exception.getResponseBodyAsString());
         }
     }
@@ -120,11 +121,11 @@ public class EvenementGeneriqueAdapter {
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<?> entity = new HttpEntity<>("", headers);
             ResponseEntity<?> responseEntity =
-                    restTemplate.exchange(EVENEMENT_GENERIQUE_URI +"/"+idEvenement,
+                    restTemplate.exchange(EVENEMENT_GENERIQUE_URI + "/" + idEvenement,
                             HttpMethod.DELETE,
                             entity,
                             ResponseEntity.class);
-        }catch(HttpClientErrorException  exception){
+        } catch (HttpClientErrorException exception) {
             throw new EvenementParcoursIntegrationException(exception.getResponseBodyAsString());
         }
     }
