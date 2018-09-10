@@ -37,13 +37,13 @@ podTemplate(label: 'meltingpoc-evenement-parcours-integration-pod', nodeSelector
 
         def now = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
 
-        stage('checkout sources') {
+        stage('CHECKOUT') {
             checkout scm;
         }
 
         container('maven') {
 
-                stage('build sources'){
+                stage('BUILD SOURCES'){
 
                     sh 'mvn clean package sonar:sonar -Dsonar.host.url=http://sonarqube-sonarqube:9000 -Dsonar.java.binaries=target -DskipTests'
                 }
@@ -51,7 +51,7 @@ podTemplate(label: 'meltingpoc-evenement-parcours-integration-pod', nodeSelector
 
         container('docker') {
 
-            stage('build docker image') {
+            stage('BUILD DOCKER IMAGE') {
 
                     sh 'mkdir /etc/docker'
 
@@ -71,7 +71,7 @@ podTemplate(label: 'meltingpoc-evenement-parcours-integration-pod', nodeSelector
 
         container('kubectl') {
 
-            stage('deploy') {
+            stage('RUN') {
 
                 build job: "/SofteamOuest/chart-run/master",
                         wait: false,
